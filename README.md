@@ -27,4 +27,4 @@ Esta calculadora permite obtener el **total a pagar** por la venta de un product
    - Permite aplicar un **porcentaje de descuento** sobre el precio base antes de calcular impuestos.
 
 
-
+Link del audio de la entrevista: https://soundcloud.com/sebastian-villa-946690590/audio-entrevista
