@@ -6,7 +6,10 @@
 
 Esta calculadora permite obtener el **total a pagar** por la venta de un producto o servicio en Colombia, considerando diferentes impuestos que pueden aplicar, según el tipo de bien o servicio. Es útil para comercios, facturadores electrónicos, contadores y desarrolladores de software.
 
----
+## Autores
+Escrito por:
+- Juan Esteban Echavarría
+- Juan Sebastián Villa 
 
 ##¿Qué impuestos calcula?
 
