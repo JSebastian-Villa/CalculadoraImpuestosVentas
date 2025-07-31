@@ -1,6 +1,6 @@
 # CalculadoraImpuestosVentas
 
-##¿Qué hace esta calculadora?
+## ¿Qué hace esta calculadora?
 
 Esta calculadora permite obtener el total a pagar por la venta de un producto o servicio en Colombia, considerando diferentes impuestos que pueden aplicar, según el tipo de bien o servicio. Es útil para comercios, facturadores electrónicos, contadores y desarrolladores de software.
 
@@ -9,7 +9,7 @@ Escrito por:
 - Juan Esteban Echavarría
 - Juan Sebastián Villa 
 
-##¿Qué impuestos calcula?
+## ¿Qué impuestos calcula?
 
 1. **IVA (Impuesto al Valor Agregado)**  
    - Tasa estándar del **19%**, pero puede ser **0%** si está exento o excluido.
@@ -25,14 +25,14 @@ Escrito por:
    - Ejemplo: **$150 por grado alcohol/litro + 20% sobre el precio de venta**.
 
 
-##Entradas
+## Entradas
 - El valor unitaario del producto.
 - La cantidad de unidades a vender.
 - El tipo de impuesto que aplica.
 - El porcentaje correspondiente al impuesto.
 - Si el producto esta exento o excluido de algun impuesto.
 
-##Salidas
+## Salidas
 - El subtotal (precio unitario multiplicado por la cantidad.
 - El valor del IVA calculado (si aplica).
 - El valor del INC (si aplica).
