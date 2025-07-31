@@ -1,0 +1,28 @@
+def calcular(valor_producto, cantidad, impuesto):
+    
+    if impuesto>0:
+        return ((valor_producto*cantidad)*impuesto)
+    else:
+        return valor_producto*cantidad
+        
+
+def caso_1():
+        
+        #Entradas 
+        valor_producto = 10_000
+        cantidad = 5
+        impuesto = 19/100
+        
+        #proceso
+        calcular_impuesto = calcular(valor_producto,cantidad,impuesto)
+        
+        #verificar salida
+        total_esperado = 11_900
+        if total_esperado == calcular_impuesto:
+            print("Prueba Normal 1 válida ")
+        else:
+            print("Prueba Normal 1 falló ")
+        
+        
+caso_1()
+        
