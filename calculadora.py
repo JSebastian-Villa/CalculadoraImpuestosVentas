@@ -1,10 +1,26 @@
+
+#paso 0: crear mi propia clase de excepción   
+
+class ErrorPorcentajeImpuestoInvalido( Exception ):
+    """Error cuando el impuesto es mayor a 100%"""
+
+class ErrorPrecioNegativo( Exception):
+    """Error cuando el valor del precio es negativo"""
+    
+class ErrorCantidadNegativa( Exception ):
+    """Error caundo la cantidad de productos es negativa"""
+    
+
+
 def calcular(valor_producto, cantidad, impuesto):
     if impuesto < 0 or impuesto > 1:
-        return "Error: impuesto inválido"
+        raise ErrorPorcentajeImpuestoInvalido("Error: impuesto inválido")
+    
     if cantidad <= 0:
-        return "Error: cantidad inválida"
+        raise ErrorCantidadNegativa ("Error: cantidad inválida")
+    
     if valor_producto <= 0:
-        return "Error: valor del producto inválido"
+       raise ErrorPrecioNegativo ("Error: valor del producto inválido")
 
     return (valor_producto * cantidad) + ((valor_producto * cantidad) * impuesto)
 
@@ -118,5 +134,3 @@ def caso_extraordinario_3():
     else:
         print("Prueba Extraordinaria 3 falló")
 
-    
-    
