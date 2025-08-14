@@ -13,14 +13,18 @@ class ErrorCantidadNegativa( Exception ):
 
 
 def calcular(valor_producto, cantidad, impuesto):
-    if impuesto < 0 or impuesto > 1:
-        raise ErrorPorcentajeImpuestoInvalido("Error: impuesto inválido")
+    
+    if valor_producto <= 0:
+           raise ErrorPrecioNegativo ("Error: valor del producto inválido")
+       
     
     if cantidad <= 0:
         raise ErrorCantidadNegativa ("Error: cantidad inválida")
     
-    if valor_producto <= 0:
-       raise ErrorPrecioNegativo ("Error: valor del producto inválido")
+    if impuesto < 0 or impuesto > 1:
+        raise ErrorPorcentajeImpuestoInvalido("Error: impuesto inválido")
+    
+    
 
     return (valor_producto * cantidad) + ((valor_producto * cantidad) * impuesto)
 
