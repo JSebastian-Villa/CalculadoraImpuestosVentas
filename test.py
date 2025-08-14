@@ -6,7 +6,6 @@ import calculadora
 class Pruebas(unittest.TestCase):
 
     def test_error_precio_negativo(self):
-        
         #entradas
         compra = -10_000
         cantidad = 3
@@ -102,7 +101,6 @@ class Pruebas(unittest.TestCase):
         impuesto = 0.05
         with self.assertRaises(calculadora.ErrorPrecioNegativo):
             calculadora.calcular(valor_producto, cantidad, impuesto)
-
 
 if __name__ == '__main__':
     unittest.main()
