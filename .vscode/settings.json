@@ -1,4 +1,12 @@
+
 {
+     "python.autoComplete.extraPaths": [
+       "src"
+    ],
+    "python.analysis.extraPaths": [
+        "src"
+    ],
+  
     "python.testing.unittestArgs": [
         "-v",
         "-s",

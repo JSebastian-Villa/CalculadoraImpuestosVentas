@@ -1,4 +1,8 @@
-from calculadora import (
+import sys 
+sys.path.append("src")
+
+
+from model.calculadora import (
     calcular,
     ErrorPrecioNegativo,
     ErrorCantidadNegativa,

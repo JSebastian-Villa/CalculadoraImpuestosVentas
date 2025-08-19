@@ -1,7 +1,6 @@
 
 import unittest
-import calculadora
-
+from src.model import calculadora
 
 class Pruebas(unittest.TestCase):
 
