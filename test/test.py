@@ -12,7 +12,7 @@ class Pruebas(unittest.TestCase):
 
     def test_error_precio_negativo(self):
         # Entradas
-        compra = -10_000
+        valor_compra = -10_000
         cantidad = 3
         impuesto = 0.19
 
@@ -20,11 +20,11 @@ class Pruebas(unittest.TestCase):
         # Paso 1: Crear el bloque with, llamando a self.assertRaises
         with self.assertRaises(ErrorPrecioNegativo):
             # Paso 2: Llamar la función
-            calcular(compra, cantidad, impuesto)
+            calcular(valor_compra, cantidad, impuesto)
 
     def test_error_cantidad_negativo(self):
         # Entradas
-        compra = 20_000
+        valor_compra = 20_000
         cantidad = -5
         impuesto = 0.19
 
@@ -32,11 +32,11 @@ class Pruebas(unittest.TestCase):
         # Paso 1: Crear el bloque with, llamando a self.assertRaises
         with self.assertRaises(ErrorCantidadNegativa):
             # Paso 2: Llamar la función
-            calcular(compra, cantidad, impuesto)
+            calcular(valor_compra, cantidad, impuesto)
 
     def test_error_porcentaje_impuesto_invalido(self):
         # Entradas
-        compra = 3_000
+        valor_compra = 3_000
         cantidad = 3
         impuesto = 1.1  # 110%
 
@@ -44,7 +44,7 @@ class Pruebas(unittest.TestCase):
         # Paso 1: Crear el bloque with, llamando a self.assertRaises
         with self.assertRaises(ErrorPorcentajeImpuestoInvalido):
             # Paso 2: Llamar la función
-            calcular(compra, cantidad, impuesto)
+            calcular(valor_compra, cantidad, impuesto)
 
     def test_normal_1(self):
         # Entradas
