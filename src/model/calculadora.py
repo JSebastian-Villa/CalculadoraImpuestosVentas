@@ -1,23 +1,25 @@
 class ErrorPorcentajeImpuestoInvalido(Exception):
-    """Error cuando el impuesto es mayor a 100%"""
+    def __init__(self, impuesto):
+        super().__init__(f"Impuesto inválido. Debe estar entre 0% y 100%. Actualmente, usted ingresó {impuesto*100}%.")
 
 
 class ErrorPrecioNegativo(Exception):
-    """Error cuando el valor del precio es negativo"""
+    def __init__(self, valor):
+        super().__init__(f"Precio inválido. Debe ser mayor que 0. Actualmente, usted ingresó {valor}.")
 
 
 class ErrorCantidadNegativa(Exception):
-    """Error cuando la cantidad de productos es negativa"""
+    def __init__(self, cantidad):
+        super().__init__(f"Cantidad inválida. Debe ser un número entero mayor que 0. Actualmente, usted ingresó {cantidad}.")
 
 
 def validar_datos(valor_producto, cantidad, impuesto):
     if valor_producto <= 0:
-        raise ErrorPrecioNegativo("Error: valor del producto inválido")
+        raise ErrorPrecioNegativo(valor_producto)
     if cantidad <= 0:
-        raise ErrorCantidadNegativa("Error: cantidad inválida")
+        raise ErrorCantidadNegativa(cantidad)
     if impuesto < 0 or impuesto > 1:
-        raise ErrorPorcentajeImpuestoInvalido("Error: impuesto inválido")
-
+        raise ErrorPorcentajeImpuestoInvalido(impuesto)
 
 
 def calcular(valor_producto, cantidad, impuesto):

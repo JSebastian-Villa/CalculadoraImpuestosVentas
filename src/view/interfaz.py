@@ -2,12 +2,13 @@ import sys
 sys.path.append("src")
 
 
-from model.calculadora import (
+from src.model.calculadora import (
     calcular,
     ErrorPrecioNegativo,
     ErrorCantidadNegativa,
     ErrorPorcentajeImpuestoInvalido,
 )
+
 
 
 def interfaz_consola():
