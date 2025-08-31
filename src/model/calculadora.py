@@ -20,6 +20,17 @@ def validar_datos(valor_producto, cantidad, impuesto):
 
 # Función para realizar los cálculos
 def calcular(valor_producto, cantidad, impuesto):
+    """
+    Calcula el subtotal, el valor del impuesto y el total de una compra.
+
+    Parámetros:
+        precio (float): Valor unitario del producto (positivo).
+        cantidad (int): Número de productos (entero positivo).
+        impuesto (float): Impuesto en proporción (ejemplo: 0.19 para 19%).
+
+    Retorna:
+        tuple: (subtotal, valor_impuesto, total)
+    """
     validar_datos(valor_producto, cantidad, impuesto)
     subtotal = valor_producto * cantidad
     iva = subtotal * impuesto
