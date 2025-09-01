@@ -7,15 +7,13 @@ del cálculo de subtotal, IVA y total, manejando las posibles excepciones de ent
 """
 
 import sys
-sys.path.append("src")
-
-from src.model.calculadora import (
+sys.path.append("src") 
+from model.calculadora import (
     calcular,
     ErrorPrecioNegativo,
     ErrorCantidadNegativa,
     ErrorPorcentajeImpuestoInvalido,
 )
-
 
 
 def interfaz_consola():
