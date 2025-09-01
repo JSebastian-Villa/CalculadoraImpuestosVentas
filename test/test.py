@@ -1,3 +1,17 @@
+"""
+Módulo de pruebas unitarias para `src.model.calculadora`.
+
+Este archivo valida:
+- Manejo de errores con excepciones personalizadas:
+  * ErrorPrecioNegativo
+  * ErrorCantidadNegativa
+  * ErrorPorcentajeImpuestoInvalido
+- Cálculos correctos de subtotal, IVA y total en casos normales.
+
+Convenciones:
+- `impuesto` se pasa como proporción (0.19 = 19%).
+- La función `calcular` retorna (subtotal, iva, total).
+"""
 
 import unittest
 from src.model.calculadora import (
@@ -9,8 +23,10 @@ from src.model.calculadora import (
 
 
 class Pruebas(unittest.TestCase):
+    """Suite de pruebas para la función `calcular` del módulo `calculadora`."""
 
     def test_error_precio_negativo(self):
+        """Debe lanzar ErrorPrecioNegativo cuando el precio es <= 0."""
         # Entradas
         valor_compra = -10_000
         cantidad = 3
@@ -23,6 +39,7 @@ class Pruebas(unittest.TestCase):
             calcular(valor_compra, cantidad, impuesto)
 
     def test_error_cantidad_negativo(self):
+        """Debe lanzar ErrorCantidadNegativa cuando la cantidad es <= 0."""
         # Entradas
         valor_compra = 20_000
         cantidad = -5
@@ -35,6 +52,7 @@ class Pruebas(unittest.TestCase):
             calcular(valor_compra, cantidad, impuesto)
 
     def test_error_porcentaje_impuesto_invalido(self):
+        """Debe lanzar ErrorPorcentajeImpuestoInvalido cuando impuesto no está en [0, 1]."""
         # Entradas
         valor_compra = 3_000
         cantidad = 3
@@ -47,6 +65,7 @@ class Pruebas(unittest.TestCase):
             calcular(valor_compra, cantidad, impuesto)
 
     def test_normal_1(self):
+        """Caso normal: 10_000 x 5 con 19% → total 59_500."""
         # Entradas
         valor_producto = 10_000
         cantidad = 5
@@ -60,6 +79,7 @@ class Pruebas(unittest.TestCase):
         self.assertAlmostEqual(cuota_calculada, cuota_esperada, places=0)
 
     def test_normal_2(self):
+        """Caso normal: 5_000 x 4 con 19% → total 23_800."""
         # Entradas
         valor_producto = 5_000
         cantidad = 4
@@ -73,6 +93,7 @@ class Pruebas(unittest.TestCase):
         self.assertAlmostEqual(cuota_calculada, cuota_esperada, places=0)
 
     def test_normal_3(self):
+        """Caso normal: 6_000 x 3 con 5% → total 18_900."""
         # Entradas
         valor_producto = 6_000
         cantidad = 3
@@ -87,6 +108,7 @@ class Pruebas(unittest.TestCase):
 
     # Casos extraordinarios
     def test_extraordinario_1_impuesto_excesivo(self):
+        """Debe lanzar ErrorPorcentajeImpuestoInvalido con impuesto > 1 (150%)."""
         # Entradas
         valor_producto = 15_000
         cantidad = 2
@@ -97,6 +119,7 @@ class Pruebas(unittest.TestCase):
             calcular(valor_producto, cantidad, impuesto)
 
     def test_extraordinario_2_cantidad_negativa(self):
+        """Debe lanzar ErrorCantidadNegativa con cantidad negativa."""
         # Entradas
         valor_producto = 8_000
         cantidad = -3  # inválida
@@ -107,6 +130,7 @@ class Pruebas(unittest.TestCase):
             calcular(valor_producto, cantidad, impuesto)
 
     def test_extraordinario_3_valor_producto_cero(self):
+        """Debe lanzar ErrorPrecioNegativo si valor del producto es 0 (según regla de negocio)."""
         # Entradas
         valor_producto = 0
         cantidad = 5

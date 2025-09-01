@@ -1,30 +1,62 @@
+"""
+Módulo: calculadora
+-------------------
+Contiene la lógica de negocio para calcular el subtotal, el impuesto y el total de una compra.
+Incluye validaciones de entrada y excepciones personalizadas para manejar errores comunes.
+
+Excepciones definidas:
+- ErrorPorcentajeImpuestoInvalido: cuando el impuesto no está en el rango [0, 1].
+- ErrorPrecioNegativo: cuando el valor del producto es menor o igual a 0.
+- ErrorCantidadNegativa: cuando la cantidad de productos es menor o igual a 0.
+
+Funciones:
+- validar_datos(valor_producto, cantidad, impuesto): valida que los parámetros sean correctos.
+- calcular(valor_producto, cantidad, impuesto): calcula subtotal, impuesto y total.
+"""
+
+
 class ErrorPorcentajeImpuestoInvalido(Exception):
-    """Error cuando el impuesto es mayor a 100%"""
+    """Error cuando el impuesto es menor a 0 o mayor a 100%."""
 
 
 class ErrorPrecioNegativo(Exception):
-    """Error cuando el valor del precio es negativo"""
+    """Error cuando el valor del producto es menor o igual a 0."""
 
 
 class ErrorCantidadNegativa(Exception):
-    """Error caundo la cantidad de productos es negativa"""
+    """Error cuando la cantidad de productos es menor o igual a 0."""
 
 
 def validar_datos(valor_producto, cantidad, impuesto):
-    if valor_producto <= 0:
-        raise ErrorPrecioNegativo("Error: valor del producto inválido")
-    if cantidad <= 0:
-        raise ErrorCantidadNegativa("Error: cantidad inválida")
-    if impuesto < 0 or impuesto > 1:
-        raise ErrorPorcentajeImpuestoInvalido("Error: impuesto inválido")
+    """
+    Valida que los datos de entrada sean correctos.
 
-# Función para realizar los cálculos
+    Parámetros:
+        valor_producto (float): Precio unitario del producto. Debe ser mayor a 0.
+        cantidad (int): Número de productos. Debe ser mayor a 0.
+        impuesto (float): Impuesto en proporción, entre 0 y 1 (ejemplo: 0.19 para 19%).
+
+    Excepciones:
+        ErrorPrecioNegativo: si el valor del producto es <= 0.
+        ErrorCantidadNegativa: si la cantidad es <= 0.
+        ErrorPorcentajeImpuestoInvalido: si el impuesto no está en [0, 1].
+    """
+    if valor_producto <= 0:
+        raise ErrorPrecioNegativo("Error: el valor del producto debe ser mayor a 0.")
+    if cantidad <= 0:
+        raise ErrorCantidadNegativa("Error: la cantidad debe ser mayor a 0.")
+    if impuesto < 0 or impuesto > 1:
+        raise ErrorPorcentajeImpuestoInvalido(
+            "Error: el impuesto debe estar entre 0 y 1 (ejemplo: 0.19 para 19%)."
+        )
+
+
 def calcular(valor_producto, cantidad, impuesto):
     """
     Calcula el subtotal, el valor del impuesto y el total de una compra.
 
     Parámetros:
-        precio (float): Valor unitario del producto (positivo).
+        valor_producto (float): Valor unitario del producto (positivo).
         cantidad (int): Número de productos (entero positivo).
         impuesto (float): Impuesto en proporción (ejemplo: 0.19 para 19%).
 
@@ -36,5 +68,3 @@ def calcular(valor_producto, cantidad, impuesto):
     iva = subtotal * impuesto
     total = subtotal + iva
     return subtotal, iva, total
-
-
