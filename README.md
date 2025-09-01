@@ -40,5 +40,21 @@ Escrito por:
 - El valor total a pagar sumando todos los impuestos aplicados.
   
 
-
 Link del audio de la entrevista: https://soundcloud.com/sebastian-villa-946690590/audio-entrevista
+
+---
+
+## 🧪 Instrucciones para ejecutar las pruebas unitarias
+
+El proyecto incluye un conjunto de pruebas unitarias ubicadas en la carpeta `test/`.  
+Estas pruebas validan:
+
+- Que las excepciones personalizadas funcionen correctamente (`ErrorPrecioNegativo`, `ErrorCantidadNegativa`, `ErrorPorcentajeImpuestoInvalido`).  
+- Que el cálculo de subtotal, IVA y total se realice correctamente en casos normales.  
+
+### Pasos para ejecutar las pruebas:
+1. Abre una terminal en la raíz del proyecto (`CalculadoraImpuestosVentas`).  
+2. Ejecuta el siguiente comando para correr **todas las pruebas**:
+
+   ```bash
+   python -m unittest discover -s test -p "test*.py"
