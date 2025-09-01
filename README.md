@@ -44,7 +44,7 @@ Link del audio de la entrevista: https://soundcloud.com/sebastian-villa-94669059
 
 ---
 
-## 🧪 Instrucciones para ejecutar las pruebas unitarias
+## Instrucciones para ejecutar las pruebas unitarias
 
 El proyecto incluye un conjunto de pruebas unitarias ubicadas en la carpeta `test/`.  
 Estas pruebas validan:
