@@ -45,6 +45,7 @@ Link del audio de la entrevista: https://soundcloud.com/sebastian-villa-94669059
 ---
 ## Estructura
 
+<<<<<<< HEAD
 ```bash
 CALCULADORAIMPUESTOSVENTAS/
 │
@@ -68,6 +69,26 @@ CALCULADORAIMPUESTOSVENTAS/
 ├── .gitignore # Ignora archivos/carpeta innecesarios para Git
 └── README.md # Documentación del proyecto
 ```
+=======
+```plaintext
+CALCULADORAIMPUESTOSVENTAS/ 
+├── src/                 # Código fuente de la lógica de la aplicación 
+│   ├── controller/      # Lógica de control (conexión entre modelo y vista) 
+│   │   └── __init__.py
+│   ├── model/           # Capa de lógica del negocio 
+│   │   ├── __init__.py
+│   │   └── calculadora.py # Lógica principal del cálculo de impuestos 
+│   ├── view/            # Capa de presentación o interfaz con el usuario (ej. menú en consola) 
+│       ├── __init__.py
+│       └── interfaz.py
+├── test/                # Pruebas unitarias 
+│   ├── __init__.py
+│   └── test.py          # Pruebas para validar cálculos y errores 
+├── Casos.xlsx           # Archivo Excel con casos de prueba o ejemplos de uso 
+├── .gitignore           # Ignora archivos/carpeta innecesarios para Git 
+└── README.md            # Documentación del proyecto
+
+>>>>>>> d2fd9676438fb190b0d1a471960f3d3881d2f82b
 
 
 ## ¿Cómo lo hago funcionar?
