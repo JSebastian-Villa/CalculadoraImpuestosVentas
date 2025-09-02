@@ -44,17 +44,36 @@ Link del audio de la entrevista: https://soundcloud.com/sebastian-villa-94669059
 
 ---
 
-## Instrucciones para ejecutar las pruebas unitarias
 
-El proyecto incluye un conjunto de pruebas unitarias ubicadas en la carpeta `test/`.  
-Estas pruebas validan:
+## ¿Cómo lo hago funcionar?
 
-- Que las excepciones personalizadas funcionen correctamente (`ErrorPrecioNegativo`, `ErrorCantidadNegativa`, `ErrorPorcentajeImpuestoInvalido`).  
-- Que el cálculo de subtotal, IVA y total se realice correctamente en casos normales.  
+### Prerrequisitos
+- Tener instalado **Python 3.10+**.  
+- Clonar este repositorio en tu máquina local.  
 
-### Pasos para ejecutar las pruebas:
-1. Abre una terminal en la raíz del proyecto (`CalculadoraImpuestosVentas`).  
-2. Ejecuta el siguiente comando para correr **todas las pruebas**:
+### Ejecución (fuera del entorno de desarrollo)
+Ubicados en la carpeta raíz del proyecto `CalculadoraImpuestosVentas`, ejecute el siguiente comando en la terminal para abrir la interfaz de consola:
 
-   ```bash
-   python -m unittest discover -s test -p "test*.py"
+```bash
+python src/view/interfaz.py
+
+
+```
+## ¿Cómo ejecuto las pruebas unitarias?
+
+Las pruebas unitarias garantizan que:  
+- El cálculo del **subtotal, IVA y total** sea correcto en diferentes escenarios.  
+- Las **excepciones personalizadas** funcionen correctamente:  
+  - `ErrorPrecioNegativo`  
+  - `ErrorCantidadNegativa`  
+  - `ErrorPorcentajeImpuestoInvalido`  
+
+### Pasos para ejecutar las pruebas unitarias:
+
+1. Abre una terminal en la **carpeta raíz** del proyecto (`CalculadoraImpuestosVentas`).  
+
+2. Ejecuta el siguiente comando para recorrer toda la carpeta `test/` y correr **todas las pruebas**:  
+
+```bash
+python -m unittest discover -s test -p "test*.py"
+
