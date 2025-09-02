@@ -72,32 +72,95 @@ CALCULADORAIMPUESTOSVENTAS/
 ## ¿Cómo lo hago funcionar?
 
 ### Prerrequisitos
-- Tener instalado **Python 3.10+**.  
-- Clonar este repositorio en tu máquina local.  
+- Tener instalado **Python 3.10+**.
+- Haber **clonado** este repositorio en tu computador.
 
 ### Ejecución (fuera del entorno de desarrollo)
-Ubicados en la carpeta raíz del proyecto `CalculadoraImpuestosVentas`, ejecute el siguiente comando en la terminal para abrir la interfaz de consola:
+Sigue estos pasos tal cual:
 
-```bash
-python src/view/interfaz.py
+1. **Abre una terminal**:
+   - Windows: abre *PowerShell* o *CMD*.
+   - macOS/Linux: abre *Terminal*.
+
+2. **Ve a la carpeta del proyecto** (la raíz donde ves `src/` y `test/`):
+   - Ejemplo Windows:
+     ```bash
+     cd C:\Users\TuUsuario\Documents\CalculadoraImpuestosVentas
+     ```
+   - Ejemplo macOS/Linux:
+     ```bash
+     cd ~/Documents/CalculadoraImpuestosVentas
+     ```
+
+3. **Ejecuta la interfaz de consola**:
+   - Con `python` (la mayoría de sistemas):
+     ```bash
+     python src/view/interfaz.py
+     ```
+   - Si tu sistema usa `python3`:
+     ```bash
+     python3 src/view/interfaz.py
+     ```
+
+4. **Ingresa los datos cuando te los pida**:
+   - Valor del producto (ej: `10000`)
+   - Cantidad (ej: `5`)
+   - Impuesto en **porcentaje** (ej: `19` para 19%)
+
+5. **Lee el resultado en pantalla**:
+   - Verás **Subtotal**, **IVA** y **Total a pagar** formateados.
+
+> *Si aparece* `ModuleNotFoundError: No module named 'model'` o `No module named 'src'`, asegúrate de:
+> - Estar **parado en la raíz del proyecto** (paso 2).
+> - Ejecutar **exactamente** el comando del paso 3 (respetando mayúsculas/minúsculas y rutas).
 
 
-```
 ## ¿Cómo ejecuto las pruebas unitarias?
 
-Las pruebas unitarias garantizan que:  
-- El cálculo del **subtotal, IVA y total** sea correcto en diferentes escenarios.  
-- Las **excepciones personalizadas** funcionen correctamente:  
-  - `ErrorPrecioNegativo`  
-  - `ErrorCantidadNegativa`  
-  - `ErrorPorcentajeImpuestoInvalido`  
+Las pruebas unitarias garantizan que:
+- El cálculo del **subtotal, IVA y total** sea correcto en diferentes escenarios.
+- Las **excepciones personalizadas** funcionen correctamente:
+  - `ErrorPrecioNegativo`
+  - `ErrorCantidadNegativa`
+  - `ErrorPorcentajeImpuestoInvalido`
 
-### Pasos para ejecutar las pruebas unitarias:
+### Pasos para ejecutar las pruebas unitarias
 
-1. Abre una terminal en la **carpeta raíz** del proyecto (`CalculadoraImpuestosVentas`).  
+1. **Abre una terminal** (PowerShell/CMD en Windows, Terminal en macOS/Linux).
 
-2. Ejecuta el siguiente comando para recorrer toda la carpeta `test/` y correr **todas las pruebas**:  
+2. **Ve a la carpeta raíz del proyecto**:
+   - Windows:
+     ```bash
+     cd C:\Users\TuUsuario\Documents\CalculadoraImpuestosVentas
+     ```
+   - macOS/Linux:
+     ```bash
+     cd ~/Documents/CalculadoraImpuestosVentas
+     ```
 
-```bash
-python -m unittest discover -s test -p "test*.py"
+3. **Ejecuta el archivo de pruebas por ruta (como pides, sin atajos)**:
+   - Con `python`:
+     ```bash
+     python -m unittest test/test.py
+     ```
+   - Si tu sistema usa `python3`:
+     ```bash
+     python3 -m unittest test/test.py
+     ```
+
+4. **Revisa el resultado**:
+   - Si todo está bien, verás algo similar a:
+     ```
+     .........
+     ----------------------------------------------------------------------
+     Ran 9 tests in 0.00Xs
+
+     OK
+     ```
+
+> **Opcional:** Para ejecutar *todas* las pruebas que haya en la carpeta `test/` (si más adelante agregas más archivos):
+> ```bash
+> python -m unittest discover -s test -p "test*.py"
+> ```
+> (Usa `python3` si tu sistema lo requiere).
 
