@@ -63,7 +63,7 @@ CALCULADORAIMPUESTOSVENTAS/
 ├── Casos.xlsx           # Archivo Excel con casos de prueba o ejemplos de uso 
 ├── .gitignore           # Ignora archivos/carpeta innecesarios para Git 
 └── README.md            # Documentación del proyecto
-
+```
 
 
 ## ¿Cómo lo hago funcionar?
