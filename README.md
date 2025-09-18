@@ -7,7 +7,11 @@ Esta calculadora permite obtener el total a pagar por la venta de un producto o 
 ## Autores
 Escrito por:
 - Juan Esteban Echavarría
-- Juan Sebastián Villa 
+- Juan Sebastián Villa
+
+##Autores Interfaz Grafica
+- Jhon Fredy Asprilla Aguilar
+- Julián David Osorio Londoño
 
 ## ¿Qué impuestos calcula?
 
