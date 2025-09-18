@@ -9,7 +9,7 @@ Escrito por:
 - Juan Esteban Echavarría
 - Juan Sebastián Villa
 
-##Autores Interfaz Grafica
+## Autores Interfaz Grafica
 - Jhon Fredy Asprilla Aguilar
 - Julián David Osorio Londoño
 
