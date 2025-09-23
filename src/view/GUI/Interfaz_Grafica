@@ -3,6 +3,7 @@ from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 
 import sys
 sys.path.append("src")
@@ -12,32 +13,38 @@ from model import calculadora
 class CalculadoraCompras(App):
 
     def build(self):
-        contenedor = BoxLayout(orientation="vertical")
+        contenedor = BoxLayout(orientation="vertical", padding=10, spacing=10)
 
-       
+        # Valor unitario
+        fila_valor = BoxLayout(orientation="horizontal", spacing=10)
         etiqueta_valor = Label(text="Valor unitario del producto")
-        contenedor.add_widget(etiqueta_valor)
         self.valor_producto = TextInput(multiline=False)
-        contenedor.add_widget(self.valor_producto)
+        fila_valor.add_widget(etiqueta_valor)
+        fila_valor.add_widget(self.valor_producto)
+        contenedor.add_widget(fila_valor)
 
-      
+        # Cantidad
+        fila_cantidad = BoxLayout(orientation="horizontal", spacing=10)
         etiqueta_cantidad = Label(text="Cantidad de productos")
-        contenedor.add_widget(etiqueta_cantidad)
         self.cantidad = TextInput(multiline=False)
-        contenedor.add_widget(self.cantidad)
+        fila_cantidad.add_widget(etiqueta_cantidad)
+        fila_cantidad.add_widget(self.cantidad)
+        contenedor.add_widget(fila_cantidad)
 
-    
+        # Impuesto
+        fila_impuesto = BoxLayout(orientation="horizontal", spacing=10)
         etiqueta_impuesto = Label(text="Impuesto (ej: 0.19 para 19%)")
-        contenedor.add_widget(etiqueta_impuesto)
         self.impuesto = TextInput(multiline=False)
-        contenedor.add_widget(self.impuesto)
+        fila_impuesto.add_widget(etiqueta_impuesto)
+        fila_impuesto.add_widget(self.impuesto)
+        contenedor.add_widget(fila_impuesto)
 
-       
+        # Botón
         boton_calcular = Button(text="Calcular")
         boton_calcular.bind(on_press=self.calcular_compra)
         contenedor.add_widget(boton_calcular)
 
-      
+        # Resultados
         self.subtotal_label = Label(text="Subtotal: ")
         contenedor.add_widget(self.subtotal_label)
 
@@ -64,10 +71,21 @@ class CalculadoraCompras(App):
         except (ValueError, calculadora.ErrorPrecioNegativo,
                 calculadora.ErrorCantidadNegativa,
                 calculadora.ErrorPorcentajeImpuestoInvalido) as e:
-            self.subtotal_label.text = "Error en los datos"
-            self.impuesto_label.text = str(e)
-            self.total_label.text = ""
+           
+            contenido = BoxLayout(orientation="vertical", padding=10, spacing=10)
+            mensaje = Label(text=str(e))
+            boton_cerrar = Button(text="Cerrar", size_hint=(1, None), height=40)
 
+            contenido.add_widget(mensaje)
+            contenido.add_widget(boton_cerrar)
+
+            popup = Popup(title="Error en los datos",
+                          content=contenido,
+                          size_hint=(0.7, 0.4),
+                          auto_dismiss=False)
+
+            boton_cerrar.bind(on_press=popup.dismiss)
+            popup.open()
 
 if __name__ == "__main__":
     app = CalculadoraCompras()
