@@ -1,8 +1,4 @@
 # src/model/calculadora.py
-
-
-
-
 class ErrorPorcentajeImpuestoInvalido(Exception):
     def __init__(self, impuesto):
         super().__init__(
