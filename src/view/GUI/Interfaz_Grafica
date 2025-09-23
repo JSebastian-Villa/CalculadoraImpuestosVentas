@@ -1,0 +1,74 @@
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+
+import sys
+sys.path.append("src")
+from model import calculadora
+
+
+class CalculadoraCompras(App):
+
+    def build(self):
+        contenedor = BoxLayout(orientation="vertical")
+
+       
+        etiqueta_valor = Label(text="Valor unitario del producto")
+        contenedor.add_widget(etiqueta_valor)
+        self.valor_producto = TextInput(multiline=False)
+        contenedor.add_widget(self.valor_producto)
+
+      
+        etiqueta_cantidad = Label(text="Cantidad de productos")
+        contenedor.add_widget(etiqueta_cantidad)
+        self.cantidad = TextInput(multiline=False)
+        contenedor.add_widget(self.cantidad)
+
+    
+        etiqueta_impuesto = Label(text="Impuesto (ej: 0.19 para 19%)")
+        contenedor.add_widget(etiqueta_impuesto)
+        self.impuesto = TextInput(multiline=False)
+        contenedor.add_widget(self.impuesto)
+
+       
+        boton_calcular = Button(text="Calcular")
+        boton_calcular.bind(on_press=self.calcular_compra)
+        contenedor.add_widget(boton_calcular)
+
+      
+        self.subtotal_label = Label(text="Subtotal: ")
+        contenedor.add_widget(self.subtotal_label)
+
+        self.impuesto_label = Label(text="Impuesto: ")
+        contenedor.add_widget(self.impuesto_label)
+
+        self.total_label = Label(text="Total: ")
+        contenedor.add_widget(self.total_label)
+
+        return contenedor
+
+    def calcular_compra(self, sender):
+        try:
+            valor = float(self.valor_producto.text)
+            cantidad = int(self.cantidad.text)
+            impuesto = float(self.impuesto.text)
+
+            subtotal, iva, total = calculadora.calcular(valor, cantidad, impuesto)
+
+            self.subtotal_label.text = f"Subtotal: {subtotal:.2f}"
+            self.impuesto_label.text = f"Impuesto: {iva:.2f}"
+            self.total_label.text = f"Total: {total:.2f}"
+
+        except (ValueError, calculadora.ErrorPrecioNegativo,
+                calculadora.ErrorCantidadNegativa,
+                calculadora.ErrorPorcentajeImpuestoInvalido) as e:
+            self.subtotal_label.text = "Error en los datos"
+            self.impuesto_label.text = str(e)
+            self.total_label.text = ""
+
+
+if __name__ == "__main__":
+    app = CalculadoraCompras()
+    app.run()
