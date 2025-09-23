@@ -6,11 +6,11 @@ from model import excepciones
 def validar_datos(valor_producto, cantidad, impuesto):
 
     if valor_producto <= 0:
-        raise ErrorPrecioNegativo(valor_producto)
+        raise excepciones.ErrorPrecioNegativo(valor_producto)
     if cantidad <= 0:
-        raise ErrorCantidadNegativa(cantidad)
+        raise excepciones.ErrorCantidadNegativa(cantidad)
     if impuesto < 0 or impuesto > 1:
-        raise ErrorPorcentajeImpuestoInvalido(impuesto)
+        raise excepciones.ErrorPorcentajeImpuestoInvalido(impuesto)
 
 
 def calcular(valor_producto, cantidad, impuesto):
