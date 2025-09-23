@@ -13,6 +13,17 @@ Escrito por:
 - Jhon Fredy Asprilla Aguilar
 - Julián David Osorio Londoño
 
+## Ejecución de la interfaz gráfica
+
+Para ejecutar la calculadora de Hipoteca Inversa con Kivy, asegúrate de tener instaladas las dependencias necesarias (principalmente **Kivy**).  
+
+1. Clona este repositorio o descarga los archivos.  
+2. Abre una terminal en la carpeta del proyecto.  
+3. Ejecuta el siguiente comando:
+
+
+python src\view\GUI Interfaz_Grafica
+
 ## ¿Qué impuestos calcula?
 
 1. **IVA (Impuesto al Valor Agregado)**  
