@@ -9,7 +9,7 @@ from kivy.graphics import Color, Rectangle
 import sys
 sys.path.append("src")
 from model import calculadora
-
+from model import excepciones
 
 class CalculadoraCompras(App):
 
@@ -110,9 +110,9 @@ class CalculadoraCompras(App):
             self.impuesto_label.text = f"Impuesto: {iva:.2f}"
             self.total_label.text = f"Total: {total:.2f}"
 
-        except (ValueError, calculadora.ErrorPrecioNegativo,
-                calculadora.ErrorCantidadNegativa,
-                calculadora.ErrorPorcentajeImpuestoInvalido) as e:
+        except (ValueError, excepciones.ErrorPrecioNegativo,
+                excepciones.ErrorCantidadNegativa,
+                excepciones.ErrorPorcentajeImpuestoInvalido) as e:
 
             contenido = BoxLayout(orientation="vertical", padding=15, spacing=10)
             mensaje = Label(text=str(e), color=[1, 1, 1, 1])
