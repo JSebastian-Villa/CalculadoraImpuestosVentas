@@ -1,20 +1,6 @@
 # src/model/calculadora.py
 
-"""
-Módulo: calculadora
--------------------
-Contiene la lógica de negocio para calcular el subtotal, el impuesto y el total de una compra.
-Incluye validaciones de entrada y excepciones personalizadas para manejar errores comunes.
 
-Excepciones definidas:
-- ErrorPorcentajeImpuestoInvalido: cuando el impuesto no está en el rango [0, 1].
-- ErrorPrecioNegativo: cuando el valor del producto es menor o igual a 0.
-- ErrorCantidadNegativa: cuando la cantidad de productos es menor o igual a 0.
-
-Funciones:
-- validar_datos(valor_producto, cantidad, impuesto): valida que los parámetros sean correctos.
-- calcular(valor_producto, cantidad, impuesto): calcula subtotal, impuesto y total.
-"""
 
 
 class ErrorPorcentajeImpuestoInvalido(Exception):
@@ -42,19 +28,7 @@ class ErrorCantidadNegativa(Exception):
 
 
 def validar_datos(valor_producto, cantidad, impuesto):
-    """
-    Valida que los datos de entrada sean correctos.
 
-    Parámetros:
-        valor_producto (float): Precio unitario del producto. Debe ser mayor a 0.
-        cantidad (int): Número de productos. Debe ser mayor a 0.
-        impuesto (float): Impuesto en proporción, entre 0 y 1 (ejemplo: 0.19 para 19%).
-
-    Excepciones:
-        ErrorPrecioNegativo
-        ErrorCantidadNegativa
-        ErrorPorcentajeImpuestoInvalido
-    """
     if valor_producto <= 0:
         raise ErrorPrecioNegativo(valor_producto)
     if cantidad <= 0:
@@ -64,17 +38,7 @@ def validar_datos(valor_producto, cantidad, impuesto):
 
 
 def calcular(valor_producto, cantidad, impuesto):
-    """
-    Calcula el subtotal, el valor del impuesto y el total de una compra.
-
-    Parámetros:
-        valor_producto (float): Valor unitario del producto (positivo).
-        cantidad (int): Número de productos (entero positivo).
-        impuesto (float): Impuesto en proporción (ejemplo: 0.19 para 19%).
-
-    Retorna:
-        tuple: (subtotal, valor_impuesto, total)
-    """
+    
     validar_datos(valor_producto, cantidad, impuesto)
     subtotal = valor_producto * cantidad
     iva = subtotal * impuesto
