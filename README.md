@@ -69,9 +69,12 @@ CALCULADORAIMPUESTOSVENTAS/
 │   ├── model/           # Capa de lógica del negocio 
 │   │   ├── __init__.py
 │   │   └── calculadora.py # Lógica principal del cálculo de impuestos 
-│   ├── view/            # Capa de presentación o interfaz con el usuario (ej. menú en consola) 
-│       ├── __init__.py
-│       └── interfaz.py
+│   └── view/            # Capa de presentación o interfaz con el usuario (ej. menú en consola)
+|       ├── Console/
+│       |   ├── __init__.py
+│       |   └── interfaz.py
+|       └── Gui/
+|           └─ interfaz_grafica.py # Interfaz Grafica 
 ├── test/                # Pruebas unitarias 
 │   ├── __init__.py
 │   └── test.py          # Pruebas para validar cálculos y errores 
