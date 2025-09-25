@@ -1,7 +1,7 @@
 import sys 
 sys.path.append("src")
 
-from model import excepciones
+from src.model import excepciones
 
 def validar_datos(valor_producto, cantidad, impuesto):
 

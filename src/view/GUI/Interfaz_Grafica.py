@@ -9,8 +9,8 @@ from kivy.graphics import Color, Rectangle
 
 import sys
 sys.path.append("src")
-from model import calculadora
-from model import excepciones
+from src.model import calculadora
+from src.model import excepciones
 
 
 class CalculadoraCompras(App):
@@ -185,8 +185,3 @@ class CalculadoraCompras(App):
 
             boton_cerrar.bind(on_press=popup.dismiss)
             popup.open()
-
-
-if __name__ == "__main__":
-    app = CalculadoraCompras()
-    app.run()
