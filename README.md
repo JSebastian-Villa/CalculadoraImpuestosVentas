@@ -7,7 +7,22 @@ Esta calculadora permite obtener el total a pagar por la venta de un producto o 
 ## Autores
 Escrito por:
 - Juan Esteban Echavarría
-- Juan Sebastián Villa 
+- Juan Sebastián Villa
+
+## Autores Interfaz Grafica
+- Jhon Fredy Asprilla Aguilar
+- Julián David Osorio Londoño
+
+## Ejecución de la interfaz gráfica
+
+Para ejecutar la calculadora de Hipoteca Inversa con Kivy, asegúrate de tener instaladas las dependencias necesarias (principalmente **Kivy**).  
+
+1. Clona este repositorio o descarga los archivos.  
+2. Abre una terminal en la carpeta del proyecto.  
+3. Ejecuta el siguiente comando:
+
+
+python src\view\GUI Interfaz_Grafica
 
 ## ¿Qué impuestos calcula?
 
@@ -54,9 +69,12 @@ CALCULADORAIMPUESTOSVENTAS/
 │   ├── model/           # Capa de lógica del negocio 
 │   │   ├── __init__.py
 │   │   └── calculadora.py # Lógica principal del cálculo de impuestos 
-│   ├── view/            # Capa de presentación o interfaz con el usuario (ej. menú en consola) 
-│       ├── __init__.py
-│       └── interfaz.py
+│   └── view/            # Capa de presentación o interfaz con el usuario (ej. menú en consola)
+|       ├── Console/
+│       |   ├── __init__.py
+│       |   └── interfaz.py
+|       └── Gui/
+|           └─ interfaz_grafica.py # Interfaz Grafica 
 ├── test/                # Pruebas unitarias 
 │   ├── __init__.py
 │   └── test.py          # Pruebas para validar cálculos y errores 
