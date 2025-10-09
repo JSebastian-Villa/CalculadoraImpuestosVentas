@@ -12,10 +12,9 @@ Convenciones:
 - `impuesto` se pasa como proporción (0.19 = 19%).
 - La función `calcular` retorna (subtotal, iva, total).
 """
-
 import unittest
-from src.model.calculadora import (
-    calcular,
+from src.model.calculadora import calcular
+from src.model.excepciones import (
     ErrorPrecioNegativo,
     ErrorCantidadNegativa,
     ErrorPorcentajeImpuestoInvalido,
