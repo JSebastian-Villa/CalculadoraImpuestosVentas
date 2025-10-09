@@ -1,6 +1,9 @@
 import unittest
 from datetime import datetime, timedelta
+import os, sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.model.entities.venta import Venta
+
 
 class TestVentaEntity(unittest.TestCase):
 
