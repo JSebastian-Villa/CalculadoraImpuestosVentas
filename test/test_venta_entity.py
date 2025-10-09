@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from src.model.entities.venta import Venta
 
 
+
 class TestVentaEntity(unittest.TestCase):
 
     def test_is_equal_true_con_tolerancia(self):
