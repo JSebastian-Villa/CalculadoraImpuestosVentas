@@ -1,5 +1,6 @@
 import sys
 import os
+from src.model.conexion_db import conectar
 
 # Asegurar que se pueda importar el modelo sin errores
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
