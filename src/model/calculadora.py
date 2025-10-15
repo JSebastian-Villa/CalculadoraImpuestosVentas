@@ -1,7 +1,15 @@
-import sys 
-sys.path.append("src")
+import sys
+import os
 
-from src.model import excepciones
+# Agregar la raíz del proyecto al sys.path si no está
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+try:
+    from src.model import excepciones
+except ModuleNotFoundError:
+    import excepciones
 
 def validar_datos(valor_producto, cantidad, impuesto):
 
@@ -20,4 +28,9 @@ def calcular(valor_producto, cantidad, impuesto):
     iva = subtotal * impuesto
     total = subtotal + iva
     return subtotal, iva, total
+
+class CalculadoraImpuestos:
+    @staticmethod
+    def calcular(valor_producto, cantidad, impuesto):
+        return calcular(valor_producto, cantidad, impuesto)
 
