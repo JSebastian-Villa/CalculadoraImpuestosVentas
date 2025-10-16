@@ -201,8 +201,8 @@ CREATE TABLE IF NOT EXISTS ventas (
   total NUMERIC(14,2) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
-);```
-
+);sql
+```
 ## 2️⃣ Crear el archivo `.env`
 
  **Ubicación:** carpeta raíz del proyecto
@@ -215,7 +215,7 @@ DB_HOST=localhost
 DB_PORT=5432
 
 Importante: Este archivo contiene credenciales privadas.
-
+```
 ## 3️⃣ Crear el archivo `secret_config.py`
 
  **Ubicación:** `src/secret_config.py`
@@ -238,7 +238,7 @@ class Settings:
     port: str = os.getenv("DB_PORT", "5432")
 
 settings = Settings()
-
+```
 ## 4️⃣ Configurar la conexión a la base de datos
 
  **Ubicación:** `src/model/conexion_db.py`
@@ -263,7 +263,7 @@ def get_connection():
     except Exception as e:
         print(" Error al conectar con la base de datos:", e)
         return None
-
+```
 ## 5️⃣ Ejecución del programa
 
 ### 🔹 Activar el entorno virtual
@@ -280,7 +280,7 @@ python src/view/Console/interfaz.py
 
 **Ejecutar la interfaz gráfica**
 python src/view/GUI/interfaz_grafica.py
-
+```
 ## ✅ Pruebas unitarias
 
 Las pruebas validan:
