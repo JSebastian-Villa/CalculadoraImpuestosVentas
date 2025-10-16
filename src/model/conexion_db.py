@@ -1,22 +1,43 @@
 # src/model/conexion_db.py
+from contextlib import contextmanager
 import psycopg2
-import os
-from dotenv import load_dotenv
 
-# Carga las variables del archivo .env
-load_dotenv()
+# lee variables desde src/secret_config.py
+try:
+    # import absoluto (cuando se ejecuta el proyecto)
+    from src.secret_config import get_db_settings
+except ModuleNotFoundError:
+    # fallback por si se ejecuta el módulo suelto
+    from secret_config import get_db_settings
 
-def get_connection():
+
+@contextmanager
+def get_conn():
+    """
+    Entrega una conexión psycopg2 dentro de un context manager.
+    - Hace commit si todo va bien.
+    - Hace rollback y relanza la excepción si algo falla.
+    - Cierra la conexión siempre al final.
+    """
+    cfg = get_db_settings()
+    conn = psycopg2.connect(
+        dbname=cfg["DB_NAME"],
+        user=cfg["DB_USER"],
+        password=cfg["DB_PASSWORD"],
+        host=cfg["DB_HOST"],
+        port=cfg["DB_PORT"],
+    )
     try:
-        connection = psycopg2.connect(
-            dbname=os.getenv("PG_DB"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT")
-        )
-        print("Conexión exitosa a la base de datos")
-        return connection
-    except Exception as e:
-        print(" Error al conectar con la base de datos:", e)
-        return None
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
+# Alias opcional por si en algún lugar lo importaste con otro nombre
+get_connection = get_conn
+
+__all__ = ["get_conn", "get_connection"]

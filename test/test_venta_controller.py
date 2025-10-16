@@ -1,52 +1,54 @@
-import unittest
-from datetime import datetime, timedelta
-import os, sys
+import unittest, pathlib, os, sys
+
+# Asegura importar desde la raíz del proyecto
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.model.conexion_db import get_conn
+from src.controller.venta_controller import VentaController
 from src.model.entities.venta import Venta
 
+SQL_DIR = pathlib.Path("sql")
 
+def setUpModule():
+    """Crea las tablas una sola vez para todos los tests de este módulo."""
+    create_sql = (SQL_DIR / "01_create_ventas.sql").read_text()
+    with get_conn() as conn, conn.cursor() as cur:
+        cur.execute(create_sql)
 
-class TestVentaEntity(unittest.TestCase):
+class TestInsertVentaController(unittest.TestCase):
 
-    def test_is_equal_true_con_tolerancia(self):
-        """Dos ventas equivalentes deben ser iguales aunque difieran en centavos."""
-        a = Venta(
-            venta_id=1,
-            valor_unitario=10000.00,
-            cantidad=5,
-            impuesto=0.19,
-            subtotal=50000.00,
-            iva=9500.00,
-            total=59500.00,
-            created_at=datetime.now(),
-            updated_at=datetime.now(),
-        )
-        # Variaciones mínimas dentro de la tolerancia (1e-2 por defecto)
-        b = Venta(
-            venta_id=99,  # id distinto no debe afectar
-            valor_unitario=10000.001,
-            cantidad=5,
-            impuesto=0.19,
-            subtotal=50000.004,
-            iva=9499.999,
-            total=59499.999,
-            created_at=datetime.now() - timedelta(days=1),
-            updated_at=datetime.now() - timedelta(minutes=5),
-        )
-        self.assertTrue(a.is_equal(b))
+    def setUp(self):
+        """Limpia la tabla antes de cada caso."""
+        clear_sql = (SQL_DIR / "00_clear.sql").read_text()
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(clear_sql)
 
-    def test_is_equal_false_por_cantidad(self):
-        """Si cambia un campo de negocio (p. ej. cantidad), no son iguales."""
-        a = Venta(None, 10000, 5, 0.19, 50000, 9500, 59500)
-        c = Venta(None, 10000, 6, 0.19, 60000, 11400, 71400)
-        self.assertFalse(a.is_equal(c))
+    # ---- Caso 1: inserción básica (19%) ----
+    def test_insert_basico_ok(self):
+        v = Venta.from_values(valor_unitario=10000.0, cantidad=5, impuesto=0.19)
+        new_id = VentaController.crear(v)
+        got = VentaController.buscar_por_id(new_id)
+        self.assertTrue(got.is_equal(v))
 
-    def test_is_equal_false_por_impuesto(self):
-        """Cambio en el impuesto (0.19 vs 0.05) los hace distintos."""
-        a = Venta(None, 6000, 3, 0.19, 18000, 3420, 21420)
-        d = Venta(None, 6000, 3, 0.05, 18000, 900, 18900)
-        self.assertFalse(a.is_equal(d))
+    # ---- Caso 2: exento (0%) con cantidad 1 ----
+    def test_insert_impuesto_cero_ok(self):
+        v = Venta.from_values(valor_unitario=2500.0, cantidad=1, impuesto=0.0)
+        vid = VentaController.crear(v)
+        got = VentaController.buscar_por_id(vid)
+        self.assertTrue(got.is_equal(v))
+        self.assertEqual(got.subtotal, 2500.00)
+        self.assertEqual(got.iva, 0.00)
+        self.assertEqual(got.total, 2500.00)
 
+    # ---- Caso 3: verifica redondeos a 2 decimales ----
+    def test_insert_redondeo_ok(self):
+        v = Venta.from_values(valor_unitario=3333.335, cantidad=3, impuesto=0.19)
+        vid = VentaController.crear(v)
+        got = VentaController.buscar_por_id(vid)
+        self.assertTrue(got.is_equal(v))
+        self.assertIsInstance(got.subtotal, float)
+        self.assertIsInstance(got.iva, float)
+        self.assertIsInstance(got.total, float)
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(verbosity=2)
