@@ -179,3 +179,125 @@ Las pruebas unitarias garantizan que:
 > ```
 > (Usa `python3` si tu sistema lo requiere).
 
+
+# Instrucciones para crear la base de datos, realizar la conexión y ejecutar el programa
+
+---
+
+## 1️ Crear la base de datos
+
+Ejecutar los siguientes comandos en **PostgreSQL**:
+
+```sql
+CREATE DATABASE calculadora_impuestos;
+
+CREATE TABLE IF NOT EXISTS ventas (
+  venta_id SERIAL PRIMARY KEY,
+  valor_unitario NUMERIC(12,2) NOT NULL,
+  cantidad INT NOT NULL,
+  impuesto NUMERIC(6,4) NOT NULL,
+  subtotal NUMERIC(14,2) NOT NULL,
+  iva NUMERIC(14,2) NOT NULL,
+  total NUMERIC(14,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+## 2️⃣ Crear el archivo `.env`
+
+ **Ubicación:** carpeta raíz del proyecto
+
+```
+DB_NAME=calculadora_impuestos
+DB_USER=tu_usuario
+DB_PASSWORD=tu_contraseña
+DB_HOST=localhost
+DB_PORT=5432
+
+Importante: Este archivo contiene credenciales privadas.
+
+## 3️⃣ Crear el archivo `secret_config.py`
+
+ **Ubicación:** `src/secret_config.py`
+
+Este archivo permite leer las variables del archivo `.env` sin exponer datos privados.
+
+```python
+import os
+from dataclasses import dataclass
+from dotenv import load_dotenv
+
+load_dotenv()
+
+@dataclass
+class Settings:
+    dbname: str = os.getenv("DB_NAME", "")
+    user: str = os.getenv("DB_USER", "")
+    password: str = os.getenv("DB_PASSWORD", "")
+    host: str = os.getenv("DB_HOST", "")
+    port: str = os.getenv("DB_PORT", "5432")
+
+settings = Settings()
+
+## 4️⃣ Configurar la conexión a la base de datos
+
+ **Ubicación:** `src/model/conexion_db.py`
+
+Este archivo establece la conexión con la base de datos PostgreSQL utilizando las variables de entorno definidas en `secret_config.py`.
+
+```python
+import psycopg2
+from src.secret_config import settings
+
+def get_connection():
+    try:
+        conn = psycopg2.connect(
+            dbname=settings.dbname,
+            user=settings.user,
+            password=settings.password,
+            host=settings.host,
+            port=settings.port
+        )
+        print("✅ Conexión exitosa a la base de datos")
+        return conn
+    except Exception as e:
+        print(" Error al conectar con la base de datos:", e)
+        return None
+
+## 5️⃣ Ejecución del programa
+
+### 🔹 Activar el entorno virtual
+
+**En Windows:**
+```bash
+.venv\Scripts\activate
+
+**En macOS/Linux:**
+source .venv/bin/activate
+
+**Ejecutar la interfaz de consola**
+python src/view/Console/interfaz.py
+
+**Ejecutar la interfaz gráfica**
+python src/view/GUI/interfaz_grafica.py
+
+## ✅ Pruebas unitarias
+
+Las pruebas validan:
+
+- Cálculo correcto de **subtotal**, **IVA** y **total**.  
+- Manejo adecuado de **excepciones personalizadas**.  
+- Funcionalidad **CRUD** de la base de datos.
+
+---
+
+###  Ejecutar las pruebas
+
+```bash
+python -m unittest discover -s test -p "test*.py"
+
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.00Xs
+
+OK
