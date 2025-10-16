@@ -10,7 +10,7 @@ def _load_env() -> None:
     - Primero intenta autodetectar con find_dotenv() (recorre hacia arriba).
     - Si no lo encuentra, intenta rutas conocidas (raíz del proyecto).
     """
-    # 1) Autodetección (recomendado)
+    # 1) Autodetección 
     env_path = find_dotenv(usecwd=True)
 
     if not env_path:
