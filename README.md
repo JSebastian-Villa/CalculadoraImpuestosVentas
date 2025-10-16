@@ -48,7 +48,7 @@ python src\view\GUI Interfaz_Grafica
 - Si el producto esta exento o excluido de algun impuesto.
 
 ## Salidas
-- El subtotal (precio unitario multiplicado por la cantidad.
+- El subtotal (precio unitario multiplicado por la cantidad).
 - El valor del IVA calculado (si aplica).
 - El valor del INC (si aplica).
 - El impuesto adicional si se trata de licores.
