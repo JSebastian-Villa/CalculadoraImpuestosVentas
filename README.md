@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS ventas (
   total NUMERIC(14,2) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
-);
+);```
 
 ## 2️⃣ Crear el archivo `.env`
 
