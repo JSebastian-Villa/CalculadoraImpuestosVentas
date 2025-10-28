@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Impuesto de Ventas</title>
+</head>
+<body>
+    <h1>Calculadora de Impuesto de Ventas</h1>
+
+    <form action="/calculadora">
+        <div>
+            Valor del producto: <input type="number" name="valor_producto" step="0.01" required>
+        </div>
+        <div>
+            Cantidad: <input type="number" name="cantidad" min="1" required>
+        </div>
+        <div>
+            Tasa de impuesto (ej. 0.13): <input type="number" name="impuesto" step="0.01" required>
+        </div>
+        <input type="submit" value="Calcular">
+    </form>
