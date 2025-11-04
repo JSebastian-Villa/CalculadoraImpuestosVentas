@@ -4,6 +4,14 @@
 
 Esta calculadora permite obtener el total a pagar por la venta de un producto o servicio en Colombia, considerando diferentes impuestos que pueden aplicar, según el tipo de bien o servicio. Es útil para comercios, facturadores electrónicos, contadores y desarrolladores de software.
 
+web: Aplicación web desarrollada en Python y Flask para calcular impuestos de ventas.
+
+##  Acceso en línea
+
+Puedes acceder a la aplicación desde el siguiente enlace:
+
+https://calculadoraimpuestosventas-2.onrender.com
+
 ## Autores
 Escrito por:
 - Juan Esteban Echavarría
@@ -301,3 +309,6 @@ python -m unittest discover -s test -p "test*.py"
 Ran 9 tests in 0.00Xs
 
 OK
+
+
+
