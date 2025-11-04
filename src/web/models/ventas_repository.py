@@ -4,7 +4,7 @@ from dataclasses import dataclass, asdict
 from decimal import Decimal, ROUND_HALF_UP
 from typing import List, Optional, Dict, Any
 
-from model.conexion_db import get_connection  # usa lo que ya tienes
+from model.conexion_db import get_connection  # es un context manager
 
 
 @dataclass
@@ -40,11 +40,17 @@ def _redondear(valor: Decimal) -> Decimal:
     return valor.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
-def crear_tablas() -> None:
-    conn = get_connection()
-    if conn is None:
-        raise RuntimeError("No se pudo obtener conexión a la BD")
+def _calcular_totales(
+    valor_unitario: Decimal, cantidad: int, impuesto: Decimal
+) -> tuple[Decimal, Decimal, Decimal]:
+    subtotal = _redondear(valor_unitario * cantidad)
+    tasa = impuesto / Decimal("100")
+    iva = _redondear(subtotal * tasa)
+    total = _redondear(subtotal + iva)
+    return subtotal, iva, total
 
+
+def crear_tablas() -> None:
     sql = """
     CREATE TABLE IF NOT EXISTS ventas (
       venta_id SERIAL PRIMARY KEY,
@@ -59,31 +65,18 @@ def crear_tablas() -> None:
     );
     """
 
-    with conn:
+    # AQUÍ usamos el context manager correctamente
+    with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(sql)
-
-
-def _calcular_totales(
-    valor_unitario: Decimal, cantidad: int, impuesto: Decimal
-) -> tuple[Decimal, Decimal, Decimal]:
-    subtotal = _redondear(valor_unitario * cantidad)
-    tasa = impuesto / Decimal("100")
-    iva = _redondear(subtotal * tasa)
-    total = _redondear(subtotal + iva)
-    return subtotal, iva, total
 
 
 def crear_venta(
     valor_unitario: Decimal, cantidad: int, impuesto: Decimal
 ) -> int:
-    conn = get_connection()
-    if conn is None:
-        raise RuntimeError("No se pudo obtener conexión a la BD")
-
     subtotal, iva, total = _calcular_totales(valor_unitario, cantidad, impuesto)
 
-    with conn:
+    with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
@@ -108,11 +101,7 @@ def crear_venta(
 
 
 def listar_ventas(venta_id: Optional[str] = None) -> List[Dict[str, Any]]:
-    conn = get_connection()
-    if conn is None:
-        raise RuntimeError("No se pudo obtener conexión a la BD")
-
-    with conn:
+    with get_connection() as conn:
         with conn.cursor() as cur:
             if venta_id:
                 cur.execute(
@@ -140,11 +129,7 @@ def listar_ventas(venta_id: Optional[str] = None) -> List[Dict[str, Any]]:
 
 
 def obtener_venta(venta_id: int) -> Optional[Dict[str, Any]]:
-    conn = get_connection()
-    if conn is None:
-        raise RuntimeError("No se pudo obtener conexión a la BD")
-
-    with conn:
+    with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
@@ -168,13 +153,9 @@ def actualizar_venta(
     cantidad: int,
     impuesto: Decimal,
 ) -> None:
-    conn = get_connection()
-    if conn is None:
-        raise RuntimeError("No se pudo obtener conexión a la BD")
-
     subtotal, iva, total = _calcular_totales(valor_unitario, cantidad, impuesto)
 
-    with conn:
+    with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(
                 """
