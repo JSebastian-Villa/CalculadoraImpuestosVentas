@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Calculadora Impuestos de Ventas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <header>
+      <h1>Calculadora Impuestos de Ventas</h1>
+      <nav>
+        <a href="{{ url_for('main.index') }}">Inicio</a>
+        <a href="{{ url_for('ventas.listado') }}">Ventas</a>
+        <a href="{{ url_for('ventas.nueva') }}">Nueva venta</a>
+        <a href="{{ url_for('main.init_db') }}">Crear tablas BD</a>
+      </nav>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="flash flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

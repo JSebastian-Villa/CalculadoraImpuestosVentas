@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Ventas registradas</h2>
+
+  <form method="get" action="{{ url_for('ventas.listado') }}">
+    <label for="venta_id">Buscar por ID:</label>
+    <input type="text" id="venta_id" name="venta_id" value="{{ venta_id or '' }}">
+    <button type="submit">Buscar</button>
+    <a href="{{ url_for('ventas.listado') }}">Limpiar</a>
+  </form>
+
+  <p><a href="{{ url_for('ventas.nueva') }}">+ Nueva venta</a></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Valor unitario</th>
+        <th>Cantidad</th>
+        <th>% Impuesto</th>
+        <th>Subtotal</th>
+        <th>IVA</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in ventas %}
+        <tr>
+          <td>{{ v.venta_id }}</td>
+          <td>{{ v.valor_unitario }}</td>
+          <td>{{ v.cantidad }}</td>
+          <td>{{ v.impuesto }}</td>
+          <td>{{ v.subtotal }}</td>
+          <td>{{ v.iva }}</td>
+          <td>{{ v.total }}</td>
+          <td>
+            <a href="{{ url_for('ventas.editar', venta_id=v.venta_id) }}">Editar</a>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="8">No hay ventas registradas.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

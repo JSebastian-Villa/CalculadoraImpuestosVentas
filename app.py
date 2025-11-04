@@ -1,23 +1,16 @@
-from flask import Flask, render_template, request
+from pathlib import Path
 import sys
-sys.path.append("src")
-from model.calculadora import CalculadoraImpuestos
 
-app = Flask(__name__)
+BASE_DIR = Path(__file__).resolve().parent
+SRC_DIR = BASE_DIR / "src"
 
-@app.route("/")
+# Para poder hacer `import web`, `import model`, etc.
+if str(SRC_DIR) not in sys.path:
+    sys.path.append(str(SRC_DIR))
 
-def hello_world():
-    return render_template("calc_impuesto.html")
+from web import create_app  # noqa: E402
 
-@app.route("/calculadora")
-def calcular_ruta():
-    valor_producto = float(request.args["valor_producto"])
-    cantidad = float(request.args["cantidad"])
-    impuesto = float(request.args["impuesto"])
+app = create_app()
 
-    valor_total = CalculadoraImpuestos.calcular( valor_producto, cantidad, impuesto)
-    return f"El valor de la compra es: {valor_total}"
-
-app.run(debug=True)
-                     
+if __name__ == "__main__":
+    app.run(debug=True, port=5001)

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Menú principal</h2>
+  <ul>
+    <li><a href="{{ url_for('ventas.listado') }}">Buscar / listar ventas</a></li>
+    <li><a href="{{ url_for('ventas.nueva') }}">Insertar nueva venta</a></li>
+    <li><a href="{{ url_for('main.init_db') }}">Crear tablas de la base de datos</a></li>
+  </ul>
+{% endblock %}
