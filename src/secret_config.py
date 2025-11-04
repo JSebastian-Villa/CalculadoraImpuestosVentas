@@ -1,58 +1,53 @@
 # src/secret_config.py
-import os
-from typing import Dict
-from dotenv import load_dotenv, find_dotenv
+from __future__ import annotations
+
 from pathlib import Path
+from typing import Dict
+from urllib.parse import urlparse
+import os
 
-def _load_env() -> None:
+from dotenv import load_dotenv
+
+
+# Carga el .env de la raíz del proyecto
+BASE_DIR = Path(__file__).resolve().parent.parent
+env_path = BASE_DIR / ".env"
+if env_path.exists():
+    load_dotenv(env_path)
+
+
+def _from_database_url(url: str) -> Dict[str, str]:
     """
-    Carga el archivo .env de forma robusta:
-    - Primero intenta autodetectar con find_dotenv() (recorre hacia arriba).
-    - Si no lo encuentra, intenta rutas conocidas (raíz del proyecto).
+    Parsea un DATABASE_URL tipo:
+    postgres://user:pass@host:5432/dbname
+    y lo convierte en las claves que usa conexion_db.
     """
-    # 1) Autodetección 
-    env_path = find_dotenv(usecwd=True)
+    parsed = urlparse(url)
 
-    if not env_path:
-        # 2) Intentos manuales (por si find_dotenv falla)
-        candidates = [
-            Path.cwd() / ".env",
-            Path(__file__).resolve().parents[1] / ".env",
-            Path(__file__).resolve().parents[2] / ".env",
-        ]
-        for c in candidates:
-            if c.exists():
-                env_path = str(c)
-                break
+    return {
+        "DB_NAME": parsed.path.lstrip("/") or "postgres",
+        "DB_USER": parsed.username or "",
+        "DB_PASSWORD": parsed.password or "",
+        "DB_HOST": parsed.hostname or "localhost",
+        "DB_PORT": str(parsed.port or 5432),
+    }
 
-    # Si aún no lo encontró, load_dotenv() aún puede cargar variables del entorno actual.
-    load_dotenv(env_path if env_path else None)
 
 def get_db_settings() -> Dict[str, str]:
     """
-    Retorna las credenciales de BD desde variables de entorno.
-    Acepta claves con prefijo DB_* y, en fallback, PG_* (por si tu .env usa ese prefijo).
-    Lanza un error si falta alguna.
+    Prioridad:
+    1. Si existe DATABASE_URL -> la usa (ideal en Render).
+    2. Si no, usa las variables DB_NAME, DB_USER, etc. del entorno/.env
+       (ideal para local).
     """
-    _load_env()
+    db_url = os.getenv("DATABASE_URL")
+    if db_url:
+        return _from_database_url(db_url)
 
-    def getenv_any(*keys):
-        for k in keys:
-            v = os.getenv(k)
-            if v:
-                return v
-        return None
-
-    cfg = {
-        "DB_NAME": getenv_any("DB_NAME", "PG_DB"),
-        "DB_USER": getenv_any("DB_USER", "PG_USER"),
-        "DB_PASSWORD": getenv_any("DB_PASSWORD", "PG_PASSWORD"),
-        "DB_HOST": getenv_any("DB_HOST", "PG_HOST"),
-        "DB_PORT": getenv_any("DB_PORT", "PG_PORT"),
+    return {
+        "DB_NAME": os.getenv("DB_NAME", "calculadora_impuestos"),
+        "DB_USER": os.getenv("DB_USER", "postgres"),
+        "DB_PASSWORD": os.getenv("DB_PASSWORD", ""),
+        "DB_HOST": os.getenv("DB_HOST", "localhost"),
+        "DB_PORT": os.getenv("DB_PORT", "5432"),
     }
-
-    faltantes = [k for k, v in cfg.items() if not v]
-    if faltantes:
-        raise RuntimeError(f"Variables faltantes en .env: {faltantes}")
-
-    return cfg
