@@ -12,18 +12,25 @@ class Venta:
     venta_id: int
     valor_unitario: Decimal
     cantidad: int
-    impuesto: Decimal  # porcentaje, por ejemplo 19 = 19%
+    impuesto: Decimal  # porcentaje para la capa web (ej. 19 = 19 %)
     subtotal: Decimal
     iva: Decimal
     total: Decimal
 
     @classmethod
     def from_db_row(cls, row: tuple[Any, ...]) -> "Venta":
+        """
+        row[3] en BD es la TASA (ej. 0.19).
+        Para la capa web lo convertimos a PORCENTAJE (19.00).
+        """
+        tasa = Decimal(row[3])           # 0.19 en BD
+        impuesto_pct = tasa * Decimal("100")  # 19.00 para la web
+
         return cls(
             venta_id=row[0],
             valor_unitario=Decimal(row[1]),
             cantidad=row[2],
-            impuesto=Decimal(row[3]),
+            impuesto=impuesto_pct,
             subtotal=Decimal(row[4]),
             iva=Decimal(row[5]),
             total=Decimal(row[6]),
@@ -31,6 +38,7 @@ class Venta:
 
     def to_dict(self) -> Dict[str, Any]:
         datos = asdict(self)
+        # formateamos decimales como string con 2 decimales
         for key in ("valor_unitario", "impuesto", "subtotal", "iva", "total"):
             datos[key] = f"{datos[key]:.2f}"
         return datos
@@ -41,13 +49,17 @@ def _redondear(valor: Decimal) -> Decimal:
 
 
 def _calcular_totales(
-    valor_unitario: Decimal, cantidad: int, impuesto: Decimal
-) -> tuple[Decimal, Decimal, Decimal]:
+    valor_unitario: Decimal, cantidad: int, impuesto_pct: Decimal
+) -> tuple[Decimal, Decimal, Decimal, Decimal]:
+    """
+    impuesto_pct llega en PORCENTAJE (ej. 19).
+    Convertimos a tasa fraccionaria para los cálculos y para guardar en BD.
+    """
+    tasa = impuesto_pct / Decimal("100")  # 19 -> 0.19
     subtotal = _redondear(valor_unitario * cantidad)
-    tasa = impuesto / Decimal("100")
     iva = _redondear(subtotal * tasa)
     total = _redondear(subtotal + iva)
-    return subtotal, iva, total
+    return subtotal, iva, total, tasa
 
 
 def crear_tablas() -> None:
@@ -56,7 +68,7 @@ def crear_tablas() -> None:
       venta_id SERIAL PRIMARY KEY,
       valor_unitario NUMERIC(12,2) NOT NULL,
       cantidad INT NOT NULL,
-      impuesto NUMERIC(6,4) NOT NULL,
+      impuesto NUMERIC(6,4) NOT NULL,  -- tasa fraccionaria, ej. 0.19
       subtotal NUMERIC(14,2) NOT NULL,
       iva NUMERIC(14,2) NOT NULL,
       total NUMERIC(14,2) NOT NULL,
@@ -65,7 +77,6 @@ def crear_tablas() -> None:
     );
     """
 
-    # AQUÍ usamos el context manager correctamente
     with get_connection() as conn:
         with conn.cursor() as cur:
             cur.execute(sql)
@@ -74,7 +85,11 @@ def crear_tablas() -> None:
 def crear_venta(
     valor_unitario: Decimal, cantidad: int, impuesto: Decimal
 ) -> int:
-    subtotal, iva, total = _calcular_totales(valor_unitario, cantidad, impuesto)
+    """
+    impuesto llega como PORCENTAJE desde el formulario (ej. 19).
+    En BD se guarda como tasa (0.19) por la restricción CHECK.
+    """
+    subtotal, iva, total, tasa = _calcular_totales(valor_unitario, cantidad, impuesto)
 
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -90,7 +105,7 @@ def crear_venta(
                 (
                     float(valor_unitario),
                     cantidad,
-                    float(impuesto),
+                    float(tasa),       # <-- GUARDAMOS LA TASA (0.19), NO 19
                     float(subtotal),
                     float(iva),
                     float(total),
@@ -153,7 +168,11 @@ def actualizar_venta(
     cantidad: int,
     impuesto: Decimal,
 ) -> None:
-    subtotal, iva, total = _calcular_totales(valor_unitario, cantidad, impuesto)
+    """
+    impuesto llega como PORCENTAJE (ej. 19) desde el formulario.
+    En BD se guarda como tasa (0.19).
+    """
+    subtotal, iva, total, tasa = _calcular_totales(valor_unitario, cantidad, impuesto)
 
     with get_connection() as conn:
         with conn.cursor() as cur:
@@ -172,7 +191,7 @@ def actualizar_venta(
                 (
                     float(valor_unitario),
                     cantidad,
-                    float(impuesto),
+                    float(tasa),       # <-- también aquí guardamos la TASA
                     float(subtotal),
                     float(iva),
                     float(total),
